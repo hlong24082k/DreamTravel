@@ -51,7 +51,7 @@ const ListingCard = ({
     if (user._id !== creator._id) {
       console.log("a")
       const response = await fetch(
-        `http://localhost:3001/users/${user?._id}/${listingId}`,
+        `https://dream-travel-server-beta.vercel.app/users/${user?._id}/${listingId}`,
         {
           method: "PATCH",
           header: {
@@ -79,7 +79,7 @@ const ListingCard = ({
           {listingPhotoPaths?.map((photo, index) => (
             <div key={index} className="slide">
               <img
-                src={`http://localhost:3001/${photo?.replace("public", "")}`}
+                src={`https://dream-travel-server-beta.vercel.app/${photo?.replace("public", "")}`}
                 alt={`photo ${index + 1}`}
               />
               <div
