@@ -21,6 +21,11 @@ app.use("/users", userRoutes)
 
 
 const PORT = 3001;
+
+app.get("/", (req, res) => {
+  res.json("Hello");
+})
+
 mongoose
   .connect(process.env.MONGO_URL, {
     dbName: "DreamTravel",
