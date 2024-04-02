@@ -3,42 +3,62 @@ import { useNavigate } from "react-router-dom"
 import "../styles/Register.scss";
 
 export default function RegisterPage() {
+	const [profileImage, setProfileImage] = useState(null)
 	const [formData, setFormData] = useState({
 		firstName: "",
 		lastName: "",
 		email: "",
 		password: "",
 		confirmPassword: "",
-		profileImage: null
+		// profileImage: null
 	})
+
+	function convertToBase64(file) {
+		return new Promise((resolve, reject) => {
+			const fileReader = new FileReader();
+			fileReader.readAsDataURL(file);
+			fileReader.onload = () => {
+				resolve(fileReader.result)
+			};
+			fileReader.onerror = (error) => {
+				reject(error)
+			}
+		})
+	}
+
+	const handleFileUpload = async (e) => {
+		const file = e.target.files[0];
+		const base64 = await convertToBase64(file);
+		setProfileImage(base64)
+	}
 
 	const handleChange = (e) => {
 		const { name, value, files } = e.target
 		setFormData({
 			...formData,
 			[name]: value,
-			[name]: name === "profileImage" ? files[0] : value
 		})
 	}
 
-	
 	const [passwordMatch, setPasswordMatch] = useState(true);
-	
+
 	useEffect(() => {
 		setPasswordMatch(formData.password === formData.confirmPassword || formData.confirmPassword === "")
-	  })
+	})
 
 	const navigate = useNavigate()
 	const handleSubmit = async (e) => {
 		e.preventDefault()
-		
+
 		try {
 			const register_form = new FormData()
+
+			formData.profileImage = profileImage
 
 			for (var key in formData) {
 				register_form.append(key, formData[key])
 			}
-			
+
 			const response = await fetch("https://dream-travel-server-beta.vercel.app/auth/register", {
 				method: "POST",
 				body: register_form
@@ -110,7 +130,7 @@ export default function RegisterPage() {
 						name='profileImage'
 						accept='image/*'
 						style={{ display: "None" }}
-						onChange={handleChange}
+						onChange={handleFileUpload}
 						required
 					/>
 
@@ -119,11 +139,12 @@ export default function RegisterPage() {
 						<p>Upload Your Photo</p>
 					</label>
 
-					{formData.profileImage && (
+					{profileImage && (
 						<img
-						src={URL.createObjectURL(formData.profileImage)}
-						alt="profile photo"
-						style={{ maxWidth: "80px" }}
+							// src={URL.createObjectURL(formData.profileImage)}
+							src={profileImage}
+							alt="profile photo"
+							style={{ maxWidth: "80px" }}
 						/>
 					)}
 

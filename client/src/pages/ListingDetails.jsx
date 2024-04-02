@@ -103,7 +103,7 @@ const ListingDetails = () => {
         <div className="photos">
           {listing.listingPhotoPaths?.map((item) => (
             <img
-              src={`https://dream-travel-server-beta.vercel.app/${item.replace("public", "")}`}
+              src={item}
               alt="listing photo"
             />
           ))}
@@ -121,10 +121,7 @@ const ListingDetails = () => {
 
         <div className="profile">
           <img
-            src={`https://dream-travel-server-beta.vercel.app/${listing.creator.profileImagePath.replace(
-              "public",
-              ""
-            )}`}
+            src={listing.creator.profileImagePath}
           />
           <h3>
             Hosted by {listing.creator.firstName} {listing.creator.lastName}

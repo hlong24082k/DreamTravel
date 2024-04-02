@@ -25,7 +25,6 @@ export default function LoginPage() {
       
       /* Get data after fetching */
       const loggedIn = await response.json()
-      console.log(loggedIn)
 
       if (response.ok) {
         dispatch(

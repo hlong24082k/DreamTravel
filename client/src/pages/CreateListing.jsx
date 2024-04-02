@@ -1,16 +1,17 @@
+import { useState } from "react";
 import "../styles/CreateListing.scss";
+import variables from "../styles/variables.scss";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer"
 import { categories, types, facilities } from "../data";
+// import convertToBase64 from "../redux/func";
 
 import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
-import variables from "../styles/variables.scss";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { IoIosImages } from "react-icons/io";
-import { useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Footer from "../components/Footer"
 
 const CreateListing = () => {
   const [category, setCategory] = useState("");
@@ -55,9 +56,25 @@ const CreateListing = () => {
   /* UPLOAD, DRAG & DROP, REMOVE PHOTOS */
   const [photos, setPhotos] = useState([]);
 
-  const handleUploadPhotos = (e) => {
-    const newPhotos = e.target.files;
-    setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos]);
+  function convertToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result)
+      };
+      fileReader.onerror = (error) => {
+        reject(error)
+      }
+    })
+  }
+
+  const handleUploadPhotos = async (e) => {
+    const newPhotos = Object.values(e.target.files);
+    newPhotos?.map( async (file, index) => {
+      const base64 = await convertToBase64(file);
+      setPhotos((prevPhotos) => [...prevPhotos, base64]);
+    })
   };
 
   const handleDragPhoto = (result) => {
@@ -123,9 +140,10 @@ const CreateListing = () => {
       listingForm.append("price", formDescription.price);
 
       /* Append each selected photos to the FormData object */
-      photos.forEach((photo) => {
-        listingForm.append("listingPhotos", photo);
-      });
+      // photos.forEach((photo) => {
+      //   listingForm.append("listingPhotos", photo);
+      // });
+      listingForm.append("listingPhotos", photos)
 
       /* Send a POST request to server */
       const response = await fetch("https://dream-travel-server-beta.vercel.app/properties/create", {
@@ -154,9 +172,8 @@ const CreateListing = () => {
             <div className="category-list">
               {categories?.map((item, index) => (
                 <div
-                  className={`category ${
-                    category === item.label ? "selected" : ""
-                  }`}
+                  className={`category ${category === item.label ? "selected" : ""
+                    }`}
                   key={index}
                   onClick={() => setCategory(item.label)}
                 >
@@ -368,9 +385,8 @@ const CreateListing = () => {
             <div className="amenities">
               {facilities?.map((item, index) => (
                 <div
-                  className={`facility ${
-                    amenities.includes(item.name) ? "selected" : ""
-                  }`}
+                  className={`facility ${amenities.includes(item.name) ? "selected" : ""
+                    }`}
                   key={index}
                   onClick={() => handleSelectAmenities(item.name)}
                 >
@@ -381,6 +397,66 @@ const CreateListing = () => {
             </div>
 
             <h3>Add some photos of your place</h3>
+            {/* <div className="photos">
+              {photos < 1 && (
+                <>
+                  <input
+                    id="image"
+                    type="file"
+                    style={{ display: "none" }}
+                    accept="image/*"
+                    onChange={handleUploadPhotos}
+                    multiple
+                  />
+                  <label htmlFor="image" className="alone">
+                    <div className="icon">
+                      <IoIosImages />
+                    </div>
+                    <p>Upload from your device</p>
+                  </label>
+                </>
+              )}
+
+              {photos.length >= 1 && (
+                <>
+                  {photos.map((photo, index) => {
+                    return (
+                      <div
+                        className="photo"
+                        key={index}
+                      >
+                        <img
+                          // src={URL.createObjectURL(photo)}
+                          src={photo}
+                          alt="place"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemovePhoto(index)}
+                        >
+                          <BiTrash />
+                        </button>
+                      </div>
+                    );
+                  })}
+                  <input
+                    id="image"
+                    type="file"
+                    style={{ display: "none" }}
+                    accept="image/*"
+                    onChange={handleUploadPhotos}
+                    multiple
+                  />
+                  <label htmlFor="image" className="together">
+                    <div className="icon">
+                      <IoIosImages />
+                    </div>
+                    <p>Upload from your device</p>
+                  </label>
+                </>
+              )}
+            </div> */}
+
             <DragDropContext onDragEnd={handleDragPhoto}>
               <Droppable droppableId="photos" direction="horizontal">
                 {(provided) => (
@@ -425,7 +501,8 @@ const CreateListing = () => {
                                   {...provided.dragHandleProps}
                                 >
                                   <img
-                                    src={URL.createObjectURL(photo)}
+                                    // src={URL.createObjectURL(photo)}
+                                    src={photo}
                                     alt="place"
                                   />
                                   <button

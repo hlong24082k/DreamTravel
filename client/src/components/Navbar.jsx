@@ -60,10 +60,7 @@ const Navbar = () => {
 						<Person sx={{ color: variables.darkgrey }} />
 					) : (
 						<img
-							src={`https://dream-travel-server-beta.vercel.app/${user.profileImagePath.replace(
-								"public",
-								""
-							)}`}
+							src={user.profileImagePath}
 							alt="profile photo"
 							style={{ objectFit: "cover", borderRadius: "50%" }}
 						/>

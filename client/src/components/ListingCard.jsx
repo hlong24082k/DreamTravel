@@ -49,7 +49,6 @@ const ListingCard = ({
 
   const patchWishList = async () => {
     if (user._id !== creator._id) {
-      console.log("a")
       const response = await fetch(
         `https://dream-travel-server-beta.vercel.app/users/${user?._id}/${listingId}`,
         {
@@ -76,10 +75,10 @@ const ListingCard = ({
           className="slider"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {listingPhotoPaths?.map((photo, index) => (
+          {listingPhotoPaths.map((photo, index) => (
             <div key={index} className="slide">
               <img
-                src={`https://dream-travel-server-beta.vercel.app/${photo?.replace("public", "")}`}
+                src={photo}
                 alt={`photo ${index + 1}`}
               />
               <div
