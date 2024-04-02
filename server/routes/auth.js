@@ -20,14 +20,13 @@ const upload = multer({ storage })
 /* User Register */
 router.post("/register", upload.single('profileImage'), async(req, res) => {
     try {
-        const { firstName, lastName, email, password } = req.body
-        const profileImage = req.file 
+        const { firstName, lastName, email, password, confirmPassword, profileImage } = req.body
         
         if(!profileImage) {
             return res.status(400).send("No file uploaded")
         }
 
-        const profileImagePath = profileImage.path
+        const profileImagePath = profileImage
 
         const existingUser = await User.findOne({ email })
         if (existingUser) {

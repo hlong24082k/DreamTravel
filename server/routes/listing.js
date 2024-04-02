@@ -16,6 +16,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+const handleListingPhotos = (photos) => {
+    const result = photos.split(",data")
+    for (const item in result) {
+        if (item!=0){
+            result[item] = `data${result[item]}`   
+        }
+    }
+    return result;
+}
+
 /* CREATE LISTING */
 router.post("/create", upload.array("listingPhotos"), async (req, res) => {
     try {
@@ -39,15 +49,14 @@ router.post("/create", upload.array("listingPhotos"), async (req, res) => {
             highlight,
             highlightDesc,
             price,
+            listingPhotos
         } = req.body;
-
-        const listingPhotos = req.files
-
         if (!listingPhotos) {
             return res.status(400).send("No file uploaded.")
         }
 
-        const listingPhotoPaths = listingPhotos.map((file) => file.path)
+        // const listingPhotoPaths = listingPhotos.map((file) => file.path)
+        const listingPhotoPaths = handleListingPhotos(listingPhotos)
 
         const newListing = new Listing({
             creator,
