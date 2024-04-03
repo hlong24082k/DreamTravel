@@ -22,7 +22,7 @@ const Navbar = () => {
 	return (
 		<div className="navbar">
 			<a href="/">
-				<img src="/assets/logo.png" alt="logo" />
+				<img src="/assets/Dream_Travel.png" alt="logo" />
 			</a>
 
 			<div className="navbar_search">

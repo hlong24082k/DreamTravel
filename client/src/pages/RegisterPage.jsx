@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom"
-import "../styles/Register.scss";
+import { useNavigate } from "react-router-dom";
+import "../styles/Register.scss"
 
-export default function RegisterPage() {
+export default function RegisterPage2() {
 	const [profileImage, setProfileImage] = useState(null)
 	const [formData, setFormData] = useState({
 		firstName: "",
@@ -77,51 +77,59 @@ export default function RegisterPage() {
 		<div className='register'>
 			<div className="register_content">
 				<form className='register_content_form' onSubmit={handleSubmit}>
-					<input
-						placeholder='First Name'
-						name='firstName'
-						value={formData.firstName}
-						onChange={handleChange}
-						required
-					/>
+					<h2>Sign Up</h2>
+					<div className="input-box">
+						<input
+							placeholder='First Name'
+							name='firstName'
+							value={formData.firstName}
+							onChange={handleChange}
+							required
+						/>
+					</div>
 
-					<input
-						placeholder='Last Name'
-						name='lastName'
-						value={formData.lastName}
-						onChange={handleChange}
-						required
-					/>
+					<div className="input-box">
+						<input
+							placeholder='Last Name'
+							name='lastName'
+							value={formData.lastName}
+							onChange={handleChange}
+							required
+						/>
+					</div>
 
-					<input
-						placeholder='Email'
-						name='email'
-						type='email'
-						value={formData.email}
-						onChange={handleChange}
-						required
-					/>
-
-					<input
-						placeholder='Password'
-						name='password'
-						type='password'
-						value={formData.password}
-						onChange={handleChange}
-						required
-					/>
-
-					<input
-						placeholder='Confirm Password'
-						name='confirmPassword'
-						type='password'
-						value={formData.confirmPassword}
-						onChange={handleChange}
-						required
-					/>
-
+					<div className="input-box">
+						<input
+							placeholder='Email'
+							name='email'
+							type='email'
+							value={formData.email}
+							onChange={handleChange}
+							required
+						/>
+					</div>
+					<div className="input-box">
+						<input
+							placeholder='Password'
+							name='password'
+							type='password'
+							value={formData.password}
+							onChange={handleChange}
+							required
+						/>
+					</div>
+					<div className="input-box">
+						<input
+							placeholder='Confirm Password'
+							name='confirmPassword'
+							type='password'
+							value={formData.confirmPassword}
+							onChange={handleChange}
+							required
+						/>
+					</div>
 					{!passwordMatch && (
-						<p style={{ color: "red" }}>Passwords are not matched!</p>
+						<p className="error" style={{ color: "red" }}>Passwords are not matched!</p>
 					)}
 
 					<input
@@ -138,7 +146,6 @@ export default function RegisterPage() {
 						<img src="/assets/addImage.png" alt="add profile photo" />
 						<p>Upload Your Photo</p>
 					</label>
-
 					{profileImage && (
 						<img
 							// src={URL.createObjectURL(formData.profileImage)}
@@ -148,10 +155,11 @@ export default function RegisterPage() {
 						/>
 					)}
 
-					<button type='submit' disabled={!passwordMatch}>REGISTER</button>
+
+					<button type='submit' className="btn" disabled={!passwordMatch}>REGISTER</button>
+					<a href='/login'>Already have an account? Log In Here</a>
 				</form>
 
-				<a href='/login'>Already have an account? Log In Here</a>
 			</div>
 
 		</div>
