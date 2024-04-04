@@ -52,6 +52,7 @@
         flex-wrap: wrap;
         gap: 10px;
         margin: 20px 0;
+        justify-content: center;
 
         img {
             max-width: 280px;
@@ -130,7 +131,7 @@
                 margin-top: 30px;
 
                 @include lg {
-                    max-width: 300px;
+                    width: 100%;
                 }
             }
         }

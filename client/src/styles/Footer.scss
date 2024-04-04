@@ -18,6 +18,10 @@
         img {
             max-width: 150px;
             margin-bottom: 20px;
+
+            @include sm {
+                max-width: 80px;
+            }
         }
 
         &_socials {
@@ -86,8 +90,8 @@
             }
         }
 
-        @include sm {
-            display: none;
-        }
+        // @include sm {
+        //     display: none;
+        // }
     }
 }
